@@ -252,7 +252,13 @@ namespace SimpleJSON
             get
             {
                 System.TimeSpan result;
+
+#if NET7_0_OR_GREATER
+                // Can't use Unity 2018                
                 if (!System.TimeSpan.TryParse(Value, CultureInfo.InvariantCulture, out result))
+#else
+                if (!System.TimeSpan.TryParse(Value, out result))
+#endif
                     result = new System.TimeSpan(0);
                 return result;
             }
@@ -271,15 +277,20 @@ namespace SimpleJSON
         {
             return aNode.AsTimeSpan;
         }
-        #endregion TimeSpan
+#endregion TimeSpan
 
-        #region Guid
+#region Guid
         public virtual System.Guid AsGuid
         {
             get
             {
                 System.Guid result;
+#if NET7_0_OR_GREATER
+                // Can't use Unity 2018
                 System.Guid.TryParse(Value, out result);
+#else
+                result = new System.Guid(Value);
+#endif
                 return result;
             }
             set
@@ -297,9 +308,9 @@ namespace SimpleJSON
         {
             return aNode.AsGuid;
         }
-        #endregion Guid
+#endregion Guid
 
-        #region ByteArray
+#region ByteArray
         public virtual byte[] AsByteArray
         {
             get
@@ -331,8 +342,8 @@ namespace SimpleJSON
         {
             return aNode.AsByteArray;
         }
-        #endregion ByteArray
-        #region ByteList
+#endregion ByteArray
+#region ByteList
         public virtual List<byte> AsByteList
         {
             get
@@ -364,9 +375,9 @@ namespace SimpleJSON
         {
             return aNode.AsByteList;
         }
-        #endregion ByteList
+#endregion ByteList
 
-        #region StringArray
+#region StringArray
         public virtual string[] AsStringArray
         {
             get
@@ -398,8 +409,8 @@ namespace SimpleJSON
         {
             return aNode.AsStringArray;
         }
-        #endregion StringArray
-        #region StringList
+#endregion StringArray
+#region StringList
         public virtual List<string> AsStringList
         {
             get
@@ -431,9 +442,9 @@ namespace SimpleJSON
         {
             return aNode.AsStringList;
         }
-        #endregion StringList
+#endregion StringList
 
-        #region NullableTypes
+#region NullableTypes
         public static implicit operator JSONNode(int? aValue)
         {
             if (aValue == null)
@@ -511,6 +522,6 @@ namespace SimpleJSON
                 return null;
             return aNode.AsShort;
         }
-        #endregion NullableTypes
+#endregion NullableTypes
     }
 }
